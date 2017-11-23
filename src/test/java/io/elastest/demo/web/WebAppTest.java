@@ -86,7 +86,7 @@ public class WebAppTest {
 	@Test
 	public void test() throws InterruptedException {
 
-		driver.get(sutURL);
+		driver.get("https://www.google.com");
 
 		Thread.sleep(3000);
 
