@@ -7,6 +7,7 @@ class PythonOrgSearch(unittest.TestCase):
 
     def setUp(self):
         selenium_hub=os.environ['ET_EUS_API']
+        print selenium_hub
         driver = webdriver.Remote(command_executor=selenium_hub,desired_capabilities={'browserName': 'firefox', 'javascriptEnabled': True})
 
     def test_search_in_python_org(self):
