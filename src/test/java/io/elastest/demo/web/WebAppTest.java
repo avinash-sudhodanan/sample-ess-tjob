@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Proxy;
-import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -83,7 +82,7 @@ public class WebAppTest {
             //proxy.setSocksUsername("username");
             //proxy.setSocksPassword("password");
             proxy.setAutodetect(false);
-            proxy.setProxyType(ProxyType.MANUAL);
+            proxy.setProxyType(org.openqa.selenium.Proxy.ProxyType.MANUAL);
             caps.setCapability(CapabilityType.PROXY, proxy);
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
