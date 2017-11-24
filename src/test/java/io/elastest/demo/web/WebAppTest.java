@@ -31,7 +31,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -73,25 +72,11 @@ public class WebAppTest {
 		if (eusURL == null) {
 			driver = new ChromeDriver(options);
 		} else {			
-			Proxy proxy = new Proxy();
-            proxy.setHttpProxy(sutURL).setFtpProxy(sutURL).setSslProxy(sutURL)
-    .setSocksProxy(sutURL);
-            System.out.println(sutURL);
 			DesiredCapabilities caps = new DesiredCapabilities();
-
-
 			caps.setBrowserName("chrome");
-			caps.setCapability(CapabilityType.PROXY, proxy);
-			//caps.setCapability(ChromeOptions.CAPABILITY, options);
-			//caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			caps.setCapability(ChromeOptions.CAPABILITY, options);
+			caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 
-            //proxy.setFtpProxy(sutURL);
-            //proxy.setSslProxy(sutURL);
-            //proxy.setSocksUsername("username");
-            //proxy.setSocksPassword("password");
-            //proxy.setAutodetect(false);
-            //proxy.setProxyType(ProxyType.MANUAL);
-            //caps.setCapability(CapabilityType.PROXY, proxy);
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
 	}
@@ -106,7 +91,7 @@ public class WebAppTest {
 	@Test
 	public void test() throws InterruptedException {
 
-		driver.get("https://www.google.com");
+		driver.get(sutURL);
 		System.out.println("Should have worked");
 	}
 
