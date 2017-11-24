@@ -15,7 +15,7 @@
  *
  */
 package io.elastest.demo.web;
-
+package com.webdriver.automation.tests;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
