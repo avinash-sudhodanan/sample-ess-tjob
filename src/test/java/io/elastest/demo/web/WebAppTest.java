@@ -71,7 +71,8 @@ public class WebAppTest {
 		} else {			
 			DesiredCapabilities caps = new DesiredCapabilities();
 			caps.setBrowserName("chrome");
-			caps.setCapability(ChromeOptions.CAPABILITY, options);					
+			caps.setCapability(ChromeOptions.CAPABILITY, options);
+			caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
 	}
