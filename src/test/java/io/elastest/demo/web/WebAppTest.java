@@ -73,6 +73,15 @@ public class WebAppTest {
 			caps.setBrowserName("chrome");
 			caps.setCapability(ChromeOptions.CAPABILITY, options);
 			caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			Proxy proxy = new Proxy();
+            proxy.setHttpProxy(sutURL);
+            proxy.setFtpProxy(sutURL);
+            proxy.setSslProxy(sutURL);
+            //proxy.setSocksUsername("username");
+            //proxy.setSocksPassword("password");
+            proxy.setAutodetect(false);
+            proxy.setProxyType(ProxyType.MANUAL);
+            caps.setCapability(CapabilityType.PROXY, proxy);
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
 	}
