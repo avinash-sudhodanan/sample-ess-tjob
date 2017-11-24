@@ -15,7 +15,7 @@
  *
  */
 package io.elastest.demo.web;
-package com.webdriver.automation.tests;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -73,13 +73,17 @@ public class WebAppTest {
 		if (eusURL == null) {
 			driver = new ChromeDriver(options);
 		} else {			
+			Proxy proxy = new Proxy();
+            proxy.setHttpProxy(sutURL).setFtpProxy(sutURL).setSslProxy(sutURL)
+    .setSocksProxy(sutURL);
 			DesiredCapabilities caps = new DesiredCapabilities();
-            addProxyCapabilities(caps, sutURL, sutURL, sutURL);
+
+
 			caps.setBrowserName("firefox");
+			caps.setCapability(CapabilityType.PROXY, proxy);
 			//caps.setCapability(ChromeOptions.CAPABILITY, options);
 			//caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-			//Proxy proxy = new Proxy();
-            //proxy.setHttpProxy(sutURL);
+
             //proxy.setFtpProxy(sutURL);
             //proxy.setSslProxy(sutURL);
             //proxy.setSocksUsername("username");
