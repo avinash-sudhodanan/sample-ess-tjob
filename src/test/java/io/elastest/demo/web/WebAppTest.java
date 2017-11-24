@@ -31,6 +31,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -73,8 +74,9 @@ public class WebAppTest {
 			driver = new ChromeDriver(options);
 		} else {			
 			DesiredCapabilities caps = new DesiredCapabilities();
-			caps.setBrowserName("chrome");
-			caps.setCapability(ChromeOptions.CAPABILITY, options);
+            addProxyCapabilities(caps, sutURL, sutURL, sutURL);
+			caps.setBrowserName("firefox");
+			//caps.setCapability(ChromeOptions.CAPABILITY, options);
 			//caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			//Proxy proxy = new Proxy();
             //proxy.setHttpProxy(sutURL);
