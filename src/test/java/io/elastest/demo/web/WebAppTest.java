@@ -76,10 +76,11 @@ public class WebAppTest {
 			Proxy proxy = new Proxy();
             proxy.setHttpProxy(sutURL).setFtpProxy(sutURL).setSslProxy(sutURL)
     .setSocksProxy(sutURL);
+            System.out.println(sutURL);
 			DesiredCapabilities caps = new DesiredCapabilities();
 
 
-			caps.setBrowserName("firefox");
+			caps.setBrowserName("chrome");
 			caps.setCapability(CapabilityType.PROXY, proxy);
 			//caps.setCapability(ChromeOptions.CAPABILITY, options);
 			//caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
