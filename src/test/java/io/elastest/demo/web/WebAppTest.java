@@ -70,8 +70,8 @@ public class WebAppTest {
 			driver = new ChromeDriver(options);
 		} else {
 			DesiredCapabilities caps = new DesiredCapabilities();
-			caps.setBrowserName("chrome");
-			caps.setCapability(ChromeOptions.CAPABILITY, options);
+			caps.setBrowserName("firefox");
+			//caps.setCapability(ChromeOptions.CAPABILITY, options);
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
 	}
