@@ -28,13 +28,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.Proxy.ProxyType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.CapabilityType;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
@@ -55,7 +52,7 @@ public class WebAppTest {
 			sutURL = "http://" + sutHost + ":8080/";
 		}
 		System.out.println("App url: " + sutURL);
-		
+
 		eusURL = System.getenv("ET_EUS_API");
 		if (eusURL == null) {
 			ChromeDriverManager.getInstance().setup();
@@ -66,17 +63,15 @@ public class WebAppTest {
 	public void setupTest() throws MalformedURLException {
 
 		ChromeOptions options = new ChromeOptions();
-		
+
 		options.addArguments("start-maximized");
-		
+
 		if (eusURL == null) {
 			driver = new ChromeDriver(options);
-		} else {			
+		} else {
 			DesiredCapabilities caps = new DesiredCapabilities();
 			caps.setBrowserName("chrome");
 			caps.setCapability(ChromeOptions.CAPABILITY, options);
-			caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
 	}
@@ -84,7 +79,7 @@ public class WebAppTest {
 	@AfterEach
 	public void teardown() {
 		if (driver != null) {
-			System.out.println("App url: ");
+			driver.quit();
 		}
 	}
 
@@ -92,7 +87,28 @@ public class WebAppTest {
 	public void test() throws InterruptedException {
 
 		driver.get(sutURL);
-		System.out.println("Should have worked");
+
+		Thread.sleep(3000);
+
+		String newTitle = "MessageTitle";
+		String newBody = "MessageBody";
+
+		driver.findElement(By.id("title-input")).sendKeys(newTitle);
+		driver.findElement(By.id("body-input")).sendKeys(newBody);
+
+		Thread.sleep(3000);
+
+		driver.findElement(By.id("submit")).click();
+
+		Thread.sleep(3000);
+
+		String title = driver.findElement(By.id("title")).getText();
+		String body = driver.findElement(By.id("body")).getText();
+
+		assertThat(title, equalTo(newTitle));
+		assertThat(body, equalTo(newBody));
+
+		Thread.sleep(3000);
 	}
 
 }
