@@ -79,7 +79,7 @@ public class WebAppTest {
 	@AfterEach
 	public void teardown() {
 		if (driver != null) {
-			System.out.println("Havana")
+			System.out.println("Havana");
 		}
 	}
 
