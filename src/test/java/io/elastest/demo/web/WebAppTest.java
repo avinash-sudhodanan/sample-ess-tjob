@@ -52,7 +52,7 @@ public class WebAppTest {
 			sutURL = "http://" + sutHost + ":8080/";
 		}
 		System.out.println("App url: " + sutURL);
-
+		
 		eusURL = System.getenv("ET_EUS_API");
 		if (eusURL == null) {
 			ChromeDriverManager.getInstance().setup();
@@ -63,15 +63,15 @@ public class WebAppTest {
 	public void setupTest() throws MalformedURLException {
 
 		ChromeOptions options = new ChromeOptions();
-
+		
 		options.addArguments("start-maximized");
-
+		
 		if (eusURL == null) {
 			driver = new ChromeDriver(options);
-		} else {
+		} else {			
 			DesiredCapabilities caps = new DesiredCapabilities();
-			caps.setBrowserName("firefox");
-			//caps.setCapability(ChromeOptions.CAPABILITY, options);
+			caps.setBrowserName("chrome");
+			caps.setCapability(ChromeOptions.CAPABILITY, options);					
 			driver = new RemoteWebDriver(new URL(eusURL), caps);
 		}
 	}
@@ -79,16 +79,16 @@ public class WebAppTest {
 	@AfterEach
 	public void teardown() {
 		if (driver != null) {
-			System.out.println("Havana");
+			driver.quit();
 		}
 	}
 
 	@Test
 	public void test() throws InterruptedException {
-		
-		System.out.println(System.getenv("ET_EUS_API"));
-		driver.get(eusURL);
-		
+
+		System.out.println("DEBUG: " + System.getenv("ET_EUS_API"));
+		driver.get(sutURL);
+
 		Thread.sleep(3000);
 
 		String newTitle = "MessageTitle";
