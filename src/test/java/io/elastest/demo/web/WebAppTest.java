@@ -85,9 +85,10 @@ public class WebAppTest {
 
 	@Test
 	public void test() throws InterruptedException {
-
-		driver.get(sutURL);
-
+		
+		System.out.println(System.getenv("ET_EUS_API"));
+		driver.get(eusURL);
+		
 		Thread.sleep(3000);
 
 		String newTitle = "MessageTitle";
