@@ -4,8 +4,6 @@ import os
 import sys
 
 class TJob():
-	
-	
 	proxyurl="http://" + str(sys.argv[1]) + ":8080/"
 	proxies = {'http':proxyurl, 'https':proxyurl}
 	def test_send_request(self):
