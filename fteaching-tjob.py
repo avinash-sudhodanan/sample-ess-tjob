@@ -8,6 +8,7 @@ import requests
 from urlparse import urlparse
 import time
 
+flag=""
 class PythonOrgSearch(unittest.TestCase):
 
     def setUp(self):
@@ -26,7 +27,11 @@ class PythonOrgSearch(unittest.TestCase):
         #self.driver = webdriver.Firefox()
     def test_search_in_python_org(self):
         driver = self.driver
-	if len(sys.argv)>1 and sys.argv[1] == "fullteaching-login":
+	essApiUrl=os.environ['ET_ESS_API']
+    	parsed_ess_url=urlparse(essApiUrl)
+    	ess_url=parsed_ess_url.scheme+"://"+parsed_ess_url.netloc
+
+	if flag == "fullteaching-login":
 		driver.get("https://52.50.3.12/#/")
 		login_launch = driver.find_element_by_xpath("//*[@id=\"navigation-bar\"]/div/ul/li[2]/a")
 		login_launch.click()
@@ -39,15 +44,14 @@ class PythonOrgSearch(unittest.TestCase):
 		time.sleep(5)
 		settings_btn = driver.find_element_by_id("settings-button")
 		settings_btn.click()
-	elif len(sys.argv)>1 and sys.argv[1] == "fullteaching-home":
+		re=requests.post(ess_url+"/ess/api/r4/start/",json={"sites": ["https://52.50.3.12/#/"]})
+	elif flag == "fullteaching-home":
 		driver.get("https://52.50.3.12/#/")		
+		re=requests.post(ess_url+"/ess/api/r4/start/",json={"sites": ["https://52.50.3.12/#/"]})
 	else:
 		driver.get("https://example.com")
-
-    	essApiUrl=os.environ['ET_ESS_API']
-    	parsed_ess_url=urlparse(essApiUrl)
-    	ess_url=parsed_ess_url.scheme+"://"+parsed_ess_url.netloc
-        re=requests.get(ess_url+"/ess/api/r4/start/")
+		re=requests.post(ess_url+"/ess/api/r4/start/",json={"sites": ["https://example.com"]})
+        #Checking the status of the scan
         if "starting-ess" in re.text:
             req=requests.get(ess_url+'/ess/api/r4/status/')
             status=req.text
@@ -60,4 +64,7 @@ class PythonOrgSearch(unittest.TestCase):
         pass
 
 if __name__ == "__main__":
+	if len(sys.argv)>1:
+		flag=sys.argv[1]
+		del sys.argv[1]
 	unittest.main()
