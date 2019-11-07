@@ -11,18 +11,20 @@ import json
 
 class PrivacyCheckTest():
     ess_url = ""
+    ess_mitm_proxy_url = ""
+    eus_url = ""
     def setUp(self):
         states = ["logged_in","logged_out"]
     	essApiUrl=os.environ['ET_ESS_API'] #get ESS API endpoint info. via env. var.
     	parsed_ess_url=urlparse(essApiUrl) #converting to parsed URL to check for protocol and path
     	self.ess_url=parsed_ess_url.scheme+"://"+parsed_ess_url.netloc
     	print("ESS URL is: "+str(self.ess_url))
-    	eusUrl=os.environ['ET_EUS_API'] #get EUS API endpoint info. via env. var.
-    	print("EUS URL is: "+str(eusUrl))
-    	ess_mitm_proxy_url=self.ess_url.rstrip(":80").lstrip("http://") #get ESS ZAP endpoint info. via ESS env. var.
+    	self.eus_url = os.environ['ET_EUS_API'] #get EUS API endpoint info. via env. var.
+    	print("EUS URL is: "+str(self.eus_url))
+    	self.ess_mitm_proxy_url = self.ess_url.rstrip(":80").lstrip("http://") #get ESS ZAP endpoint info. via ESS env. var.
         #begin selenium via EUS code (with ZAP as proxy)
     	options = webdriver.ChromeOptions()
-    	options.add_argument('--proxy-server='+ess_mitm_proxy_url+":8080")
+    	options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
     	capabilities = options.to_capabilities()
         #self.driver = webdriver.Remote(command_executor=eusUrl, desired_capabilities=capabilities)
         #end selenium via EUS code (with ZAP as proxy)
@@ -49,7 +51,9 @@ class PrivacyCheckTest():
         re=requests.post(self.ess_url+"/ess/api/r4/startstate/",json={"statename": "logged_in", "phase": phase}) #tell ESS API which state script is going to start
         status=re.text
         #Begin set firefox proxy and open it
+        """
         proxy =  "127.0.0.1"+":8080"
+        proxy = self.ess_mitm_proxy_url
         firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
         firefox_capabilities['marionette'] = True
         firefox_capabilities['proxy'] = {
@@ -58,7 +62,15 @@ class PrivacyCheckTest():
             "ftpProxy": proxy,
             "sslProxy": proxy
         }
-        driver = webdriver.Firefox(capabilities=firefox_capabilities)
+        driver = webdriver.Firefox(capabilities=firefox_capabilities) #uncomment during debugging
+        """
+        # End set firefox proxy for debugging
+
+        #Begin chrome proxy for demo
+        options = webdriver.ChromeOptions()
+    	options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
+    	capabilities = options.to_capabilities()
+        driver = webdriver.Remote(command_executor=self.eus_url, desired_capabilities=capabilities)
         driver.set_page_load_timeout(15)
         #End set firefox proxy and open it
         if "State script starting noted" in status:
@@ -116,6 +128,7 @@ class PrivacyCheckTest():
     	re = requests.post(self.ess_url+"/ess/api/r4/startstate/",json={"statename": "logged_out", "phase": phase}) #tell ESS API which state script is going to start
         status = re.text
         #Begin set firefox proxy and open it
+        """
         proxy =  "127.0.0.1"+":8080"
         firefox_capabilities = webdriver.DesiredCapabilities.FIREFOX
         firefox_capabilities['marionette'] = True
@@ -126,8 +139,15 @@ class PrivacyCheckTest():
             "sslProxy": proxy
         }
         driver = webdriver.Firefox(capabilities=firefox_capabilities)
+        """
+        #Begin chrome proxy for demo
+        options = webdriver.ChromeOptions()
+    	options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
+    	capabilities = options.to_capabilities()
+        driver = webdriver.Remote(command_executor=self.eus_url, desired_capabilities=capabilities)
         driver.set_page_load_timeout(15)
         #End set firefox proxy and open it
+
         if "State script starting noted" in status:
             driver.get(url)
             if phase != "First":
