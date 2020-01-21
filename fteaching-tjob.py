@@ -21,13 +21,20 @@ class PythonOrgSearch(unittest.TestCase):
     	ess_mitm_proxy_url=ess_url.rstrip(":80").lstrip("http://")
     	options = webdriver.ChromeOptions()
     	options.add_argument('--proxy-server='+ess_mitm_proxy_url+":8080")
-    	capabilities = options.to_capabilities()
-        self.driver = webdriver.Remote(command_executor=eusUrl, desired_capabilities=capabilities)
+        options.add_argument('--ignore-certificate-errors')
+	options.add_argument('--no-sandbox')
+	options.add_argument('--window-size=1420,1080')
+	options.add_argument('--headless')
+	options.add_argument('--disable-gpu')
+	self.driver = webdriver.Chrome(chrome_options=options) #do not use EUS remote driver
+    	#capabilities = options.to_capabilities()
+        #self.driver = webdriver.Remote(command_executor=eusUrl, desired_capabilities=capabilities)
 	#debug
 	#proxies = {'http': ess_mitm_proxy_url+":8080",'https': ess_mitm_proxy_url+":8080"}
 	#requests.get('http://example.org', proxies=proxies)
 
         #self.driver = webdriver.Chrome(desired_capabilities=capabilities)
+	
     	#self.driver = webdriver.Firefox()
     def test_search_in_python_org(self):
     	driver = self.driver
@@ -55,6 +62,7 @@ class PythonOrgSearch(unittest.TestCase):
     	else:
     		driver.get("https://example.com")
     		driver.get("https://example.org")
+    		print(driver.page_source)
     		re=requests.post(ess_url+"/ess/api/r4/start/",json={"sites": ["https://example.com","https://example.org"]})
     	#Checking the status of the scan
     	if "starting-ess" in re.text:

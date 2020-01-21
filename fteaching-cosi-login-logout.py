@@ -25,7 +25,12 @@ class PrivacyCheckTest():
         #begin selenium via EUS code (with ZAP as proxy)
     	options = webdriver.ChromeOptions()
     	options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
-    	capabilities = options.to_capabilities()
+        options.add_argument('--ignore-certificate-errors')
+	options.add_argument('--no-sandbox')
+	options.add_argument('--window-size=1420,1080')
+	options.add_argument('--headless')
+	options.add_argument('--disable-gpu')
+
         #self.driver = webdriver.Remote(command_executor=eusUrl, desired_capabilities=capabilities)
         #end selenium via EUS code (with ZAP as proxy)
 
@@ -67,15 +72,26 @@ class PrivacyCheckTest():
         # End set firefox proxy for debugging
 
         #Begin chrome proxy for demo
-        options = webdriver.ChromeOptions()
+        #options = webdriver.ChromeOptions()
+    	#options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
+    	#capabilities = options.to_capabilities()
+        #driver = webdriver.Remote(command_executor=self.eus_url, desired_capabilities=capabilities)
+        #driver.set_page_load_timeout(15)
+	options = webdriver.ChromeOptions()
     	options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
-    	capabilities = options.to_capabilities()
-        driver = webdriver.Remote(command_executor=self.eus_url, desired_capabilities=capabilities)
-        driver.set_page_load_timeout(15)
+        options.add_argument('--ignore-certificate-errors')
+	options.add_argument('--no-sandbox')
+	options.add_argument('--window-size=1420,1080')
+	options.add_argument('--headless')
+	options.add_argument('--disable-gpu')
+	driver = webdriver.Chrome(chrome_options=options) #do not use EUS remote driver
+        driver.set_page_load_timeout(60)
         #End set firefox proxy and open it
         if "State script starting noted" in status:
 
             driver.get(url)
+            time.sleep(15)
+            print(driver.page_source)
             #Being full teaching login code
             login_launch = driver.find_element_by_xpath("//*[@id=\"navigation-bar\"]/div/ul/li[2]/a")
             login_launch.click()
@@ -144,11 +160,20 @@ class PrivacyCheckTest():
         driver = webdriver.Firefox(capabilities=firefox_capabilities)
         """
         #Begin chrome proxy for demo
-        options = webdriver.ChromeOptions()
+        #options = webdriver.ChromeOptions()
+    	#options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
+    	#capabilities = options.to_capabilities()
+        #driver = webdriver.Remote(command_executor=self.eus_url, desired_capabilities=capabilities)
+        #driver.set_page_load_timeout(15)
+	options = webdriver.ChromeOptions()
     	options.add_argument('--proxy-server='+self.ess_mitm_proxy_url+":8080")
-    	capabilities = options.to_capabilities()
-        driver = webdriver.Remote(command_executor=self.eus_url, desired_capabilities=capabilities)
-        driver.set_page_load_timeout(15)
+        options.add_argument('--ignore-certificate-errors')
+	options.add_argument('--no-sandbox')
+	options.add_argument('--window-size=1420,1080')
+	options.add_argument('--headless')
+	options.add_argument('--disable-gpu')
+	driver = webdriver.Chrome(chrome_options=options) #do not use EUS remote driver
+        driver.set_page_load_timeout(60)
         #End set firefox proxy and open it
 
         if "State script starting noted" in status:
