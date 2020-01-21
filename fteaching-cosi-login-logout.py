@@ -88,10 +88,9 @@ class PrivacyCheckTest():
         driver.set_page_load_timeout(60)
         #End set firefox proxy and open it
         if "State script starting noted" in status:
-
             driver.get(url)
             time.sleep(15)
-            print(driver.page_source)
+            print(len(driver.page_source))
             #Being full teaching login code
             login_launch = driver.find_element_by_xpath("//*[@id=\"navigation-bar\"]/div/ul/li[2]/a")
             login_launch.click()
